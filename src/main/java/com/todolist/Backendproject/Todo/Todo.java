@@ -1,9 +1,12 @@
-package com.todolist.Backendproject;
+package com.todolist.Backendproject.Todo;
+
 
 import java.time.LocalDateTime;
+
 import java.time.LocalDate;
 
 public class Todo {
+
   private long id;
   private String text;
   private boolean done;
