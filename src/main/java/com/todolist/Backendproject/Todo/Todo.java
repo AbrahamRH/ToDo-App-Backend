@@ -8,7 +8,7 @@ import java.time.LocalDate;
 public class Todo {
 
   private long id;
-  private String text;
+  private String name;
   private boolean done;
   private Priority priority;
   private LocalDate dueDate;
@@ -19,7 +19,7 @@ public class Todo {
 
   public Todo(long id, String text, boolean done, Priority priority, LocalDate dueDate, LocalDateTime creationDate) {
     this.id = id;
-    this.text = text;
+    this.name = text;
     this.done = done;
     this.priority = priority;
     this.dueDate = dueDate;
@@ -33,12 +33,12 @@ public class Todo {
     this.id = id;
   }
 
-  public String getText() {
-    return text;
+  public String getName() {
+    return name;
   }
 
-  public void setText(String text) {
-    this.text = text;
+  public void setName(String text) {
+    this.name = text;
   }
 
   public boolean isDone() {
