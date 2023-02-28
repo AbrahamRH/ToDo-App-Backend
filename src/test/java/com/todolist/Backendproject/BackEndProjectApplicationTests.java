@@ -4,18 +4,15 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import com.todolist.Backendproject.Todo.Priority;
 import com.todolist.Backendproject.Todo.Todo;
 import com.todolist.Backendproject.Todo.TodoRepository;
 
 @SpringBootTest
-class BackEndProjectApplicationTests {
+class BackEndApplicationTests {
 
 	@Autowired
 	TodoRepository todoRepository = new TodoRepository();
-
-	@Test
-	void contextLoads() {
-	}
 
 	@Test
 	void testGetById() {
@@ -43,8 +40,22 @@ class BackEndProjectApplicationTests {
 		todoRepository.add(todo2);
 		todoRepository.add(todo3);
 		todoRepository.add(todo4);
-		System.out.println(todoRepository.filterByName("lim"));
+
 		assert(todoRepository.filterByName("limpiar").size() == 3);
+	}
+
+	@Test
+	void testFilterByPriority() {
+		Todo todo1 = new Todo(0, "Hi", false, Priority.HIGH, null, null);
+		Todo todo2 = new Todo(0, "Hi", false, Priority.MEDIUM, null, null);
+		Todo todo3 = new Todo(0, "Hi", false, Priority.LOW, null, null);
+		Todo todo4 = new Todo(0, "Hi", false, Priority.LOW, null, null);
+		todoRepository.add(todo1);
+		todoRepository.add(todo2);
+		todoRepository.add(todo3);
+		todoRepository.add(todo4);
+
+		assert(todoRepository.filterByPriority(Priority.LOW).size() == 2);
 	}
 
 }
