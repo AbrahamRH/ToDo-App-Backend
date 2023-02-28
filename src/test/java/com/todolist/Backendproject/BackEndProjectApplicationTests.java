@@ -9,7 +9,7 @@ import com.todolist.Backendproject.Todo.Todo;
 import com.todolist.Backendproject.Todo.TodoRepository;
 
 @SpringBootTest
-class BackEndApplicationTests {
+class BackEndProjectApplicationTests {
 
 	@Autowired
 	TodoRepository todoRepository = new TodoRepository();
@@ -54,6 +54,8 @@ class BackEndApplicationTests {
 		todoRepository.add(todo2);
 		todoRepository.add(todo3);
 		todoRepository.add(todo4);
+
+		System.out.println(todoRepository.filterByPriority(Priority.LOW).size());
 
 		assert(todoRepository.filterByPriority(Priority.LOW).size() == 2);
 	}
