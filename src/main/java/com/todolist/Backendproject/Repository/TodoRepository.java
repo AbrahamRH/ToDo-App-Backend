@@ -1,5 +1,8 @@
-package com.todolist.Backendproject.Todo;
+package com.todolist.Backendproject.Repository;
 import org.springframework.stereotype.Repository;
+
+import com.todolist.Backendproject.Component.Priority;
+import com.todolist.Backendproject.Component.Todo;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -16,7 +19,7 @@ public class TodoRepository {
     this.todos.add(todo);
   }
 
-  public List<Todo> getTodos() {
+  public List<Todo> findAll() {
     return Collections.unmodifiableList(todos);
   }
 
@@ -26,7 +29,9 @@ public class TodoRepository {
   }
 
   public List<Todo> filterByName(String name) {
-    return todos.stream().filter(todo -> todo.getName().contains(name))
+    return todos.stream().filter(todo -> todo.getName()
+                                             .toLowerCase()
+                                             .contains(name.toLowerCase()))
                 .collect(ArrayList::new, ArrayList::add, ArrayList::addAll);
   }
 
