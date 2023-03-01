@@ -41,8 +41,7 @@ public class TodoService implements ITodoService{
 
   @Override
   public List<Todo> filterByDone(boolean done) {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'filterByDone'");
+    return repository.filterByDone(done);
   }
 
   @Override

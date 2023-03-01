@@ -29,14 +29,22 @@ public class TodoRepository {
   }
 
   public List<Todo> filterByName(String name) {
-    return todos.stream().filter(todo -> todo.getName()
-                                             .toLowerCase()
-                                             .contains(name.toLowerCase()))
+    return todos.stream()
+                .filter(todo -> todo.getName()
+                                    .toLowerCase()
+                                    .contains(name.toLowerCase()))
                 .collect(ArrayList::new, ArrayList::add, ArrayList::addAll);
   }
 
   public List<Todo> filterByPriority(Priority prio){
-    return todos.stream().filter(todo -> todo.getPriority().equals(prio))
+    return todos.stream()
+                .filter(todo -> todo.getPriority().equals(prio))
+                .collect(Collectors.toList());
+  }
+
+  public List<Todo> filterByDone(boolean done){
+    return todos.parallelStream()
+                .filter(todo -> todo.isDone() == done)
                 .collect(Collectors.toList());
   }
 }
