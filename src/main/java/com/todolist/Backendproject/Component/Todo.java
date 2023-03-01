@@ -7,6 +7,7 @@ import java.time.LocalDate;
 
 public class Todo {
 
+  private static int count = 0; 
   private long id;
   private String name;
   private boolean done;
@@ -14,11 +15,8 @@ public class Todo {
   private LocalDate dueDate;
   private LocalDateTime creationDate;
 
-  public Todo() {
-  }
-
-  public Todo(long id, String text, boolean done, Priority priority, LocalDate dueDate, LocalDateTime creationDate) {
-    this.id = id;
+  public Todo(String text, boolean done, Priority priority, LocalDate dueDate, LocalDateTime creationDate) {
+    this.id = ++count;
     this.name = text;
     this.done = done;
     this.priority = priority;
@@ -71,5 +69,10 @@ public class Todo {
 
   public void setCreationDate(LocalDateTime creationDate) {
     this.creationDate = creationDate;
+  }
+
+  @Override
+  public String toString(){
+    return getId() +","+ getName() + "," + getPriority().name() + "," + getDueDate();
   }
 }
