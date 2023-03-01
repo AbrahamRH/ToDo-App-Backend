@@ -1,5 +1,8 @@
-package com.todolist.Backendproject.Todo;
+package com.todolist.Backendproject.Repository;
 import org.springframework.stereotype.Repository;
+
+import com.todolist.Backendproject.Component.Priority;
+import com.todolist.Backendproject.Component.Todo;
 
 import java.util.List;
 import java.util.ArrayList;

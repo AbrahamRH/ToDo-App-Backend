@@ -4,9 +4,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import com.todolist.Backendproject.Todo.Priority;
-import com.todolist.Backendproject.Todo.Todo;
-import com.todolist.Backendproject.Todo.TodoRepository;
+import com.todolist.Backendproject.Component.Priority;
+import com.todolist.Backendproject.Component.Todo;
+import com.todolist.Backendproject.Repository.TodoRepository;
 
 @SpringBootTest
 class BackEndProjectApplicationTests {
