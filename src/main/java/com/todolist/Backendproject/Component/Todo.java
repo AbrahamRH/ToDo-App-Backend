@@ -15,13 +15,13 @@ public class Todo {
   private LocalDate dueDate;
   private LocalDateTime creationDate;
 
-  public Todo(String text, boolean done, Priority priority, LocalDate dueDate, LocalDateTime creationDate) {
+  public Todo(String text, boolean done, Priority priority, LocalDate dueDate) {
     this.id = ++count;
     this.name = text;
     this.done = done;
     this.priority = priority;
     this.dueDate = dueDate;
-    this.creationDate = creationDate;
+    this.creationDate = LocalDateTime.now();
   }
 
   public long getId() {

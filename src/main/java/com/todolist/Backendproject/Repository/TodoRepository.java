@@ -34,7 +34,7 @@ public class TodoRepository {
                 .filter(todo -> todo.getName()
                                     .toLowerCase()
                                     .contains(name.toLowerCase()))
-                .collect(ArrayList::new, ArrayList::add, ArrayList::addAll);
+                .collect(Collectors.toList());
   }
 
   public List<Todo> filterByPriority(Priority prio){
