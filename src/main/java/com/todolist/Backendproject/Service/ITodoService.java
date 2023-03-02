@@ -7,6 +7,9 @@ import java.util.List;
 public interface ITodoService {
 
   void createTodo(Todo todo);
+
+  boolean delete(long id);
+
   List<Todo> findAll(); 
 
   Todo findById(long id);

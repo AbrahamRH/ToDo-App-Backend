@@ -59,4 +59,13 @@ class BackEndProjectApplicationTests {
 		assert(service.filterByDone(false).size() == 2);
 	}
 
+	@Test
+	void testDeleteTodo(){
+		service.createTodo(new Todo("Limpiar", false, Priority.LOW, null, null));
+		service.createTodo(new Todo("Limpiar Casa", false, Priority.HIGH, null, null));
+		service.createTodo(new Todo("Limpiar Auto", true, Priority.MEDIUM, null, null));
+
+		assert(service.delete(2) == true);
+	}
+
 }

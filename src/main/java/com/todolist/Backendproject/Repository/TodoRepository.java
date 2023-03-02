@@ -47,4 +47,9 @@ public class TodoRepository {
                 .filter(todo -> todo.isDone() == done)
                 .collect(Collectors.toList());
   }
+
+
+  public boolean delete(long id){
+    return todos.removeIf(todo -> (todo.getId() == id));
+  }
 }

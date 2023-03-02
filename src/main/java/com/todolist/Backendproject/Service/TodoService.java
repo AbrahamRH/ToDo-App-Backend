@@ -20,6 +20,11 @@ public class TodoService implements ITodoService{
   }
 
   @Override
+  public boolean delete(long id){
+    return repository.delete(id);
+  }
+
+  @Override
   public List<Todo> findAll() {
     return repository.findAll();
   }
