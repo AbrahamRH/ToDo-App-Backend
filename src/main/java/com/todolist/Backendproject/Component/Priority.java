@@ -1,4 +1,4 @@
-package com.todolist.Backendproject.Todo;
+package com.todolist.Backendproject.Component;
 
 public enum Priority {
   HIGH, MEDIUM, LOW;

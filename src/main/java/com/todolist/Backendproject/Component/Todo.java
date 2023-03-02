@@ -1,4 +1,4 @@
-package com.todolist.Backendproject.Todo;
+package com.todolist.Backendproject.Component;
 
 
 import java.time.LocalDateTime;
@@ -7,23 +7,21 @@ import java.time.LocalDate;
 
 public class Todo {
 
+  private static int count = 0; 
   private long id;
-  private String text;
+  private String name;
   private boolean done;
   private Priority priority;
   private LocalDate dueDate;
   private LocalDateTime creationDate;
 
-  public Todo() {
-  }
-
-  public Todo(long id, String text, boolean done, Priority priority, LocalDate dueDate, LocalDateTime creationDate) {
-    this.id = id;
-    this.text = text;
+  public Todo(String text, boolean done, Priority priority, LocalDate dueDate) {
+    this.id = ++count;
+    this.name = text;
     this.done = done;
     this.priority = priority;
     this.dueDate = dueDate;
-    this.creationDate = creationDate;
+    this.creationDate = LocalDateTime.now();
   }
 
   public long getId() {
@@ -33,12 +31,12 @@ public class Todo {
     this.id = id;
   }
 
-  public String getText() {
-    return text;
+  public String getName() {
+    return name;
   }
 
-  public void setText(String text) {
-    this.text = text;
+  public void setName(String text) {
+    this.name = text;
   }
 
   public boolean isDone() {
@@ -71,5 +69,10 @@ public class Todo {
 
   public void setCreationDate(LocalDateTime creationDate) {
     this.creationDate = creationDate;
+  }
+
+  @Override
+  public String toString(){
+    return getId() +","+ getName() + "," + getPriority().name() + "," + getDueDate();
   }
 }
