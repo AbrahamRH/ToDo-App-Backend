@@ -2,13 +2,17 @@ package com.todolist.Backendproject.Service;
 
 import com.todolist.Backendproject.Component.Priority;
 import com.todolist.Backendproject.Component.Todo;
+
 import java.util.List;
+import java.time.LocalDate;
 
 public interface ITodoService {
 
   void createTodo(Todo todo);
 
   boolean delete(long id);
+
+  boolean update(long id, String name, Priority priority, LocalDate dueDate);
 
   List<Todo> findAll(); 
 

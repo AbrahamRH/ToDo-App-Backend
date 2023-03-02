@@ -6,6 +6,7 @@ import com.todolist.Backendproject.Component.Todo;
 
 import java.util.List;
 import java.util.ArrayList;
+import java.time.LocalDate;
 import java.util.Collections;
 import java.util.stream.Collectors;
 
@@ -48,8 +49,16 @@ public class TodoRepository {
                 .collect(Collectors.toList());
   }
 
-
   public boolean delete(long id){
     return todos.removeIf(todo -> (todo.getId() == id));
+  }
+
+  public boolean update(long id, String name, Priority priority, LocalDate dueDate){
+    Todo newTodo = findById(id);
+    if(newTodo == null) return false;
+    newTodo.setName(name);
+    newTodo.setPriority(priority);
+    newTodo.setDueDate(dueDate);
+    return true;
   }
 }

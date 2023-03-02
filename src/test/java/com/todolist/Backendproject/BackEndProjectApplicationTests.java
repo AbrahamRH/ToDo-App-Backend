@@ -68,4 +68,13 @@ class BackEndProjectApplicationTests {
 		assert(service.delete(2) == true);
 	}
 
+	@Test
+	void testUpdateTodo(){
+		service.createTodo(new Todo("Limpiar", false, Priority.LOW, null, null));
+		assert(service.update(1,"Limpiar Casa", Priority.HIGH, null) == true);
+
+		assert(service.findById(1).getName() == "Limpiar Casa");
+		assert(service.findById(1).getPriority() == Priority.HIGH);
+	}
+
 }

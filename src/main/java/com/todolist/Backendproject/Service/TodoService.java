@@ -1,6 +1,7 @@
 package com.todolist.Backendproject.Service;
 
 import java.util.List;
+import java.time.LocalDate;
 
 import com.todolist.Backendproject.Repository.TodoRepository;
 import com.todolist.Backendproject.Component.Priority;
@@ -22,6 +23,11 @@ public class TodoService implements ITodoService{
   @Override
   public boolean delete(long id){
     return repository.delete(id);
+  }
+
+  @Override
+  public boolean update(long id, String name, Priority priority, LocalDate dueDate){
+    return repository.update(id, name, priority, dueDate);
   }
 
   @Override
