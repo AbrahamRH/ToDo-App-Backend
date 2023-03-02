@@ -27,10 +27,12 @@ class BackEndProjectApplicationTests {
 
 	@Test
 	void testGetById() {
+		Todo newTodo = new Todo("Limpiar", false, Priority.HIGH, null);
+
+		service.createTodo(newTodo);
 		service.createTodo(new Todo("Limpiar", false, Priority.HIGH, null));
 		service.createTodo(new Todo("Limpiar", false, Priority.HIGH, null));
-		service.createTodo(new Todo("Limpiar", false, Priority.HIGH, null));
-		assert(service.findById(1).getId() == 1);
+		assert(service.findById(newTodo.getId()).getId() == newTodo.getId());
 	}
 
 	@Test
@@ -61,20 +63,21 @@ class BackEndProjectApplicationTests {
 
 	@Test
 	void testDeleteTodo(){
-		service.createTodo(new Todo("Limpiar", false, Priority.LOW, null));
+		Todo newTodo = new Todo("Limpiar", false, Priority.LOW, null);
+		service.createTodo(newTodo);
 		service.createTodo(new Todo("Limpiar Casa", false, Priority.HIGH, null));
 		service.createTodo(new Todo("Limpiar Auto", true, Priority.MEDIUM, null));
 
-		assert(service.delete(2) == true);
+		assert(service.delete(newTodo.getId()) == true);
 	}
 
 	@Test
 	void testUpdateTodo(){
-		service.createTodo(new Todo("Limpiar", false, Priority.LOW, null));
-		assert(service.update(1,"Limpiar Casa", Priority.HIGH, null) == true);
-
-		assert(service.findById(1).getName() == "Limpiar Casa");
-		assert(service.findById(1).getPriority() == Priority.HIGH);
+		Todo newTodo = new Todo("Limpiar", false, Priority.LOW, null);
+		service.createTodo(newTodo);
+		assert(service.update(newTodo.getId(),"Limpiar Casa", Priority.HIGH, null) == true);
+		assert(service.findById(newTodo.getId()).getName() == "Limpiar Casa");
+		assert(service.findById(newTodo.getId()).getPriority() == Priority.HIGH);
 	}
 
 }
