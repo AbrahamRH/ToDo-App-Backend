@@ -33,10 +33,20 @@ public class ComparatorTodo implements Comparator<Todo>{
 
   @Override
   public int compare(Todo todo1, Todo todo2){
-    if (byPriority){
-      return comparePriority(todo1, todo2);
+
+    if (ascending){
+      if (byPriority){
+        return comparePriority(todo1, todo2);
+      } else {
+        return compareDueDate(todo1, todo2);
+      }
     } else {
-      return compareDueDate(todo1, todo2);
+      if (byPriority){
+        return comparePriority(todo2, todo1);
+      } else {
+        return compareDueDate(todo2, todo1);
+      }
+
     }
   }
   
