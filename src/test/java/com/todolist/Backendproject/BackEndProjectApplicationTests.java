@@ -3,10 +3,12 @@ package com.todolist.Backendproject;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import com.todolist.Backendproject.Component.Priority;
 import com.todolist.Backendproject.Component.Todo;
+import com.todolist.Backendproject.Component.Priority;
 import com.todolist.Backendproject.Service.TodoService;
 import com.todolist.Backendproject.Repository.TodoRepository;
+
+import java.time.LocalDate;
 
 @SpringBootTest
 class BackEndProjectApplicationTests {
@@ -86,16 +88,16 @@ class BackEndProjectApplicationTests {
 		service.createTodo(new Todo("Limpiar Casa", false, Priority.HIGH, null));
 		service.createTodo(new Todo("Limpiar Auto", true, Priority.MEDIUM, null));
 		service.createTodo(newTodo);
-		service.sort(true, false, true, false).forEach(System.out::println);
+		service.sort(true, true, false).forEach(System.out::println);
 	}
 
 	@Test
 	void testSortingDueDate(){
-		Todo newTodo = new Todo("Limpiar", false, Priority.LOW, null);
+		Todo newTodo = new Todo("Limpiar", false, Priority.LOW, LocalDate.of(2023,04,4));
 		service.createTodo(newTodo);
-		service.createTodo(new Todo("Limpiar Casa", false, Priority.HIGH, null));
-		service.createTodo(new Todo("Limpiar Auto", true, Priority.MEDIUM, null));
-		service.sort(false,true, false, true).forEach(System.out::println);
+		service.createTodo(new Todo("Limpiar Casa", true, Priority.MEDIUM, LocalDate.of(2023,03,2)));
+		service.createTodo(new Todo("Limpiar Auto", true, Priority.MEDIUM, LocalDate.of(2023,02,2)));
+		service.sort(false, true, false).forEach(System.out::println);
 	}
 
 }

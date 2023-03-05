@@ -64,8 +64,8 @@ public class TodoRepository {
     return true;
   }
 
-  public List<Todo> sort(boolean prio, boolean due, boolean pAscending, boolean dAscending ){
-    ComparatorTodo comparator = new ComparatorTodo(prio, due, pAscending, dAscending, false);
+  public List<Todo> sort(boolean byPriority, boolean ascending, boolean firstPrio){
+    ComparatorTodo comparator = new ComparatorTodo(byPriority, ascending);
     List<Todo> sortedTodos = new ArrayList<Todo>(todos);
     Collections.sort(sortedTodos, comparator);
     return sortedTodos;
