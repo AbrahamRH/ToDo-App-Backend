@@ -1,6 +1,7 @@
 package com.todolist.Backendproject.Repository;
 import org.springframework.stereotype.Repository;
 
+import com.todolist.Backendproject.Component.ComparatorTodo;
 import com.todolist.Backendproject.Component.Priority;
 import com.todolist.Backendproject.Component.Todo;
 
@@ -60,5 +61,23 @@ public class TodoRepository {
     newTodo.setPriority(priority);
     newTodo.setDueDate(dueDate);
     return true;
+  }
+
+  public List<Todo> sort(boolean byPriority, boolean pAscending, boolean byDueDate, boolean dAscending, boolean firstPrio){
+    ComparatorTodo comparatorPriority = new ComparatorTodo(byPriority, pAscending);
+    ComparatorTodo comparatorDueDate = new ComparatorTodo(byDueDate, dAscending);
+    List<Todo> sortedTodos = new ArrayList<Todo>(todos);
+    if (byPriority && byDueDate) {
+      if (firstPrio){ 
+        Collections.sort(sortedTodos, comparatorPriority.thenComparing(comparatorDueDate));
+      } else {
+        Collections.sort(sortedTodos, comparatorDueDate.thenComparing(comparatorPriority));
+      }
+    } else if (byPriority) {
+      Collections.sort(sortedTodos, comparatorPriority);
+    } else {
+      Collections.sort(sortedTodos, comparatorDueDate);
+    }
+    return sortedTodos;
   }
 }
