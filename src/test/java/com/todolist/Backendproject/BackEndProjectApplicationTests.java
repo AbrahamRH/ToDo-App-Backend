@@ -80,4 +80,13 @@ class BackEndProjectApplicationTests {
 		assert(service.findById(newTodo.getId()).getPriority() == Priority.HIGH);
 	}
 
+	@Test
+	void testSortingPriority(){
+		Todo newTodo = new Todo("Limpiar", false, Priority.LOW, null);
+		service.createTodo(newTodo);
+		service.createTodo(new Todo("Limpiar Casa", false, Priority.HIGH, null));
+		service.createTodo(new Todo("Limpiar Auto", true, Priority.MEDIUM, null));
+		service.sort().forEach(System.out::println);
+	}
+
 }

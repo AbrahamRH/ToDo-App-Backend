@@ -57,8 +57,7 @@ public class TodoService implements ITodoService{
 
   @Override
   public List<Todo> sort() {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'sort'");
+    return repository.sort();
   }
 
 }
