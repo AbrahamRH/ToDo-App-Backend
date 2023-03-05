@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.ArrayList;
 import java.time.LocalDate;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.stream.Collectors;
 
 @Repository
@@ -64,10 +63,21 @@ public class TodoRepository {
     return true;
   }
 
-  public List<Todo> sort(boolean byPriority, boolean ascending, boolean firstPrio){
-    ComparatorTodo comparator = new ComparatorTodo(byPriority, ascending);
+  public List<Todo> sort(boolean byPriority, boolean pAscending, boolean byDueDate, boolean dAscending, boolean firstPrio){
+    ComparatorTodo comparatorPriority = new ComparatorTodo(byPriority, pAscending);
+    ComparatorTodo comparatorDueDate = new ComparatorTodo(byDueDate, dAscending);
     List<Todo> sortedTodos = new ArrayList<Todo>(todos);
-    Collections.sort(sortedTodos, comparator);
+    if (byPriority && byDueDate) {
+      if (firstPrio){ 
+        Collections.sort(sortedTodos, comparatorPriority.thenComparing(comparatorDueDate));
+      } else {
+        Collections.sort(sortedTodos, comparatorDueDate.thenComparing(comparatorPriority));
+      }
+    } else if (byPriority) {
+      Collections.sort(sortedTodos, comparatorPriority);
+    } else {
+      Collections.sort(sortedTodos, comparatorDueDate);
+    }
     return sortedTodos;
   }
 }
