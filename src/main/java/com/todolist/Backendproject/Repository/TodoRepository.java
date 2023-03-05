@@ -1,7 +1,7 @@
 package com.todolist.Backendproject.Repository;
 import org.springframework.stereotype.Repository;
 
-import com.todolist.Backendproject.Component.ComparableTodo;
+import com.todolist.Backendproject.Component.ComparatorTodo;
 import com.todolist.Backendproject.Component.Priority;
 import com.todolist.Backendproject.Component.Todo;
 
@@ -64,8 +64,8 @@ public class TodoRepository {
     return true;
   }
 
-  public List<Todo> sort(){
-    ComparableTodo comparator = new ComparableTodo();
+  public List<Todo> sort(boolean prio, boolean due, boolean pAscending, boolean dAscending ){
+    ComparatorTodo comparator = new ComparatorTodo(prio, due, pAscending, dAscending, false);
     List<Todo> sortedTodos = new ArrayList<Todo>(todos);
     Collections.sort(sortedTodos, comparator);
     return sortedTodos;

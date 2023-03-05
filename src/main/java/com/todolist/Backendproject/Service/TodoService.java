@@ -56,8 +56,8 @@ public class TodoService implements ITodoService{
   }
 
   @Override
-  public List<Todo> sort() {
-    return repository.sort();
+  public List<Todo> sort(boolean prio, boolean due, boolean pAscending, boolean dAscending ){
+    return repository.sort(prio, due, pAscending, dAscending);
   }
 
 }

@@ -83,10 +83,19 @@ class BackEndProjectApplicationTests {
 	@Test
 	void testSortingPriority(){
 		Todo newTodo = new Todo("Limpiar", false, Priority.LOW, null);
+		service.createTodo(new Todo("Limpiar Casa", false, Priority.HIGH, null));
+		service.createTodo(new Todo("Limpiar Auto", true, Priority.MEDIUM, null));
+		service.createTodo(newTodo);
+		service.sort(true, false, true, false).forEach(System.out::println);
+	}
+
+	@Test
+	void testSortingDueDate(){
+		Todo newTodo = new Todo("Limpiar", false, Priority.LOW, null);
 		service.createTodo(newTodo);
 		service.createTodo(new Todo("Limpiar Casa", false, Priority.HIGH, null));
 		service.createTodo(new Todo("Limpiar Auto", true, Priority.MEDIUM, null));
-		service.sort().forEach(System.out::println);
+		service.sort(false,true, false, true).forEach(System.out::println);
 	}
 
 }
