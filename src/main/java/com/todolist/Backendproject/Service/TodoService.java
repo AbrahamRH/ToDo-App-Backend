@@ -66,4 +66,9 @@ public class TodoService implements ITodoService{
     return repository.sort(byPriority, pAscending, byDueDate, dAscending, firstPrio);
   }
 
+  @Override
+  public boolean isEmpty(){
+    return (repository.findAll().size() == 0) ? true : false;
+  }
+
 }
