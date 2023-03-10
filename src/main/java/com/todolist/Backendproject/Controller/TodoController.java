@@ -2,6 +2,7 @@ package com.todolist.Backendproject.Controller;
 
 import java.util.List;
 import java.net.URI;
+import java.time.LocalDateTime;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -42,7 +43,10 @@ public class TodoController {
     }
   }
 
-  @PostMapping(value = "/todos", consumes = "application/json", produces = "application/json")
+  @PostMapping(
+    value = "/todos", consumes = "application/json", 
+    produces = "application/json"
+  )
   public ResponseEntity<Todo> createTodo(@RequestBody Todo todo) {
     service.createTodo(todo);
     URI url = URI.create("/todos/" + todo.getId());
@@ -56,6 +60,24 @@ public class TodoController {
     } else {
       return ResponseEntity.ok().build();
     }
-
   }
+
+  @PostMapping(
+    value = "/todos/{id}/done"
+  )
+  public ResponseEntity<Void> setDone(@PathVariable long id) {
+    service.findById(id).setDone(true);
+    service.findById(id).setDoneDate(LocalDateTime.now());
+    return ResponseEntity.ok().build();
+  }
+
+  @PutMapping(
+    value = "/todos/{id}/undone"
+  )
+  public ResponseEntity<Void> setUndone(@PathVariable long id) {
+    service.findById(id).setDone(false);
+    service.findById(id).setDoneDate(null);
+    return ResponseEntity.ok().build();
+  }
+
 }
