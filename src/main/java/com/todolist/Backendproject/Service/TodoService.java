@@ -1,14 +1,20 @@
 package com.todolist.Backendproject.Service;
 
-import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import java.time.LocalDate;
+import java.util.List;
 
 import com.todolist.Backendproject.Repository.TodoRepository;
 import com.todolist.Backendproject.Component.Priority;
 import com.todolist.Backendproject.Component.Todo;
 
+
+@Service
 public class TodoService implements ITodoService{
 
+  @Autowired
   private final TodoRepository repository;
 
   public TodoService(TodoRepository repository){
