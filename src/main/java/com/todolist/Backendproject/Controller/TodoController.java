@@ -23,12 +23,9 @@ public class TodoController {
   @Autowired
   private TodoService service;
 
-  @GetMapping(
-    value="/todos", 
-    produces="application/json" 
-  )
-  public ResponseEntity<List<Todo>> findAll(){
-    if(service.isEmpty()){
+  @GetMapping(value = "/todos", produces = "application/json")
+  public ResponseEntity<List<Todo>> findAll() {
+    if (service.isEmpty()) {
       return ResponseEntity.noContent().build();
     } else {
       return ResponseEntity.ok().body(service.findAll());
@@ -38,21 +35,27 @@ public class TodoController {
   @GetMapping("/todos/{id}")
   public ResponseEntity<Todo> findTodoById(@PathVariable long id) {
     Todo todo = service.findById(id);
-    if ( todo == null ){
+    if (todo == null) {
       return ResponseEntity.notFound().build();
     } else {
       return ResponseEntity.ok().body(todo);
     }
   }
 
-  @PostMapping (
-    value="/todos", 
-    consumes="application/json",
-    produces="application/json"
-  )
+  @PostMapping(value = "/todos", consumes = "application/json", produces = "application/json")
   public ResponseEntity<Todo> createTodo(@RequestBody Todo todo) {
     service.createTodo(todo);
     URI url = URI.create("/todos/" + todo.getId());
     return ResponseEntity.created(url).body(todo);
+  }
+
+  @PutMapping(value = "/todos/{id}", consumes = "application/json")
+  public ResponseEntity<Void> updateProduct(@PathVariable long id, @RequestBody Todo todo) {
+    if(!service.update(id, todo.getName(), todo.getPriority(), todo.getDueDate())) {
+      return ResponseEntity.notFound().build();
+    } else {
+      return ResponseEntity.ok().build();
+    }
+
   }
 }
