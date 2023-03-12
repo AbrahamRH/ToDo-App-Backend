@@ -8,17 +8,22 @@ import com.todolist.Backendproject.Component.Todo;
 import java.util.List;
 import java.util.ArrayList;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.stream.Collectors;
 
 @Repository
 public class TodoRepository {
+  private static int nextId = 0; 
   private List<Todo> todos = new ArrayList<Todo>();
 
   public TodoRepository() { }
 
-  public void add(Todo todo) {
+  public Todo add(Todo todo) {
+    todo.setId(++nextId);
+    todo.setCreationDate(LocalDateTime.now());
     this.todos.add(todo);
+    return todo;
   }
 
   public List<Todo> findAll() {

@@ -1,14 +1,20 @@
 package com.todolist.Backendproject.Service;
 
-import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import java.time.LocalDate;
+import java.util.List;
 
 import com.todolist.Backendproject.Repository.TodoRepository;
 import com.todolist.Backendproject.Component.Priority;
 import com.todolist.Backendproject.Component.Todo;
 
+
+@Service
 public class TodoService implements ITodoService{
 
+  @Autowired
   private final TodoRepository repository;
 
   public TodoService(TodoRepository repository){
@@ -58,6 +64,11 @@ public class TodoService implements ITodoService{
   @Override
   public List<Todo> sort(boolean byPriority, boolean pAscending, boolean byDueDate, boolean dAscending, boolean firstPrio){
     return repository.sort(byPriority, pAscending, byDueDate, dAscending, firstPrio);
+  }
+
+  @Override
+  public boolean isEmpty(){
+    return (repository.findAll().size() == 0) ? true : false;
   }
 
 }

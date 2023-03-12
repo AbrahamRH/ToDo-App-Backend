@@ -24,6 +24,8 @@ public interface ITodoService {
 
   List<Todo> filterByDone(boolean done);
 
-   List<Todo> sort(boolean byPriority, boolean pAscending, boolean byDueDate, boolean dAscending, boolean firstPrio);
+  List<Todo> sort(boolean byPriority, boolean pAscending, boolean byDueDate, boolean dAscending, boolean firstPrio);
+
+  boolean isEmpty();
   
 }

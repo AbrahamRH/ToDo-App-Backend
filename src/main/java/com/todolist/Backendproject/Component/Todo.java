@@ -7,20 +7,20 @@ import java.time.LocalDate;
 
 public class Todo {
 
-  private static int count = 0; 
   private long id;
   private String name;
   private boolean done;
   private Priority priority;
   private LocalDate dueDate;
+  private LocalDateTime doneDate;
   private LocalDateTime creationDate;
 
   public Todo(String text, boolean done, Priority priority, LocalDate dueDate) {
-    this.id = ++count;
     this.name = text;
     this.done = done;
     this.priority = priority;
     this.dueDate = dueDate;
+    this.doneDate = null;
     this.creationDate = LocalDateTime.now();
   }
 
@@ -61,6 +61,14 @@ public class Todo {
 
   public void setDueDate(LocalDate dueDate) {
     this.dueDate = dueDate;
+  }
+
+  public LocalDateTime getDoneDate(){
+    return this.doneDate;
+  }
+
+  public void setDoneDate(LocalDateTime doneDate){
+    this.doneDate = doneDate;
   }
 
   public LocalDateTime getCreationDate() {
