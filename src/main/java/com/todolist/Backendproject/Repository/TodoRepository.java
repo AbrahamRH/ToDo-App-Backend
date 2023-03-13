@@ -36,7 +36,7 @@ public class TodoRepository {
   }
 
   public List<Todo> filterByName(String name) {
-    return todos.stream()
+    return todos.parallelStream()
                 .filter(todo -> todo.getName()
                                     .toLowerCase()
                                     .contains(name.toLowerCase()))
@@ -44,7 +44,7 @@ public class TodoRepository {
   }
 
   public List<Todo> filterByPriority(Priority prio){
-    return todos.stream()
+    return todos.parallelStream()
                 .filter(todo -> todo.getPriority().equals(prio))
                 .collect(Collectors.toList());
   }
