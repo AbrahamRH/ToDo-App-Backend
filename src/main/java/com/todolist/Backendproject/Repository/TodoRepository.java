@@ -31,7 +31,7 @@ public class TodoRepository {
   }
 
   public Todo findById(long id) {
-    return this.todos.stream().filter(todo -> todo.getId() == id)
+    return this.todos.parallelStream().filter(todo -> todo.getId() == id)
                .findFirst().orElse(null);
   }
 
