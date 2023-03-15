@@ -18,6 +18,8 @@ public interface ITodoService {
 
   Todo findById(long id);
 
+  List<Todo> filter(String name, String priority, String done);
+
   List<Todo> filterByName(String name);
 
   List<Todo> filterByPriority(Priority priority);
@@ -27,5 +29,6 @@ public interface ITodoService {
   List<Todo> sort(boolean byPriority, boolean pAscending, boolean byDueDate, boolean dAscending, boolean firstPrio);
 
   boolean isEmpty();
+
   
 }

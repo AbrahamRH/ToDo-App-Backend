@@ -47,6 +47,11 @@ public class TodoService implements ITodoService{
   }
 
   @Override
+  public List<Todo> filter(String name, String priority, String done){
+    return repository.filter(name, priority, done);
+  }
+
+  @Override
   public List<Todo> filterByName(String name) {
     return repository.filterByName(name);
   }
