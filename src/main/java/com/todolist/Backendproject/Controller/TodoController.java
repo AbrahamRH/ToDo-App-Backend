@@ -1,10 +1,12 @@
 package com.todolist.Backendproject.Controller;
 
-import java.util.List;
 import java.net.URI;
 import java.time.LocalDateTime;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,21 +29,23 @@ public class TodoController {
   private TodoService service;
 
   @GetMapping(value = "/todos", produces = "application/json")
-  public ResponseEntity<List<Todo>> findAll(@RequestParam(defaultValue = "") String name,
-      @RequestParam(defaultValue = "ALL") String priority, @RequestParam(defaultValue = "ALL") String done) {
+  public ResponseEntity<Page<Todo>> findAll( @RequestParam(defaultValue = "0") int pageNumber,
+    @RequestParam(defaultValue = "") String name, @RequestParam(defaultValue = "ALL") String priority, @RequestParam(defaultValue = "ALL") String done) {
 
     name = ( name == "") ? null : name;
     priority = (priority.equals("ALL")) ? null : priority;
     done = (done.equals("ALL")) ? null : done;
 
+    Pageable todoPage = PageRequest.of(0,10);
+
     if( name == priority && name == done){
       if (service.isEmpty()) {
         return ResponseEntity.noContent().build();
       } else { 
-        return ResponseEntity.ok().body(service.findAll());
+        return ResponseEntity.ok().body(service.findAll(todoPage));
       }
     } else {
-      List<Todo> filteredTodos = service.filter(name, priority, done);
+      Page<Todo> filteredTodos = service.filter(name, priority, done, todoPage);
       if (filteredTodos.isEmpty()) {
         return ResponseEntity.noContent().build();
       } else {
