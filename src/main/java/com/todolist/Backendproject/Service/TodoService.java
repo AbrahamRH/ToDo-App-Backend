@@ -48,7 +48,6 @@ public class TodoService implements ITodoService {
     List<Todo> todos = List.copyOf(findAll());
     int start = (int) pageable.getOffset();
     int end = (int) ((start + pageable.getPageSize()) > todos.size() ? todos.size() : (start + pageable.getPageSize()));
-    System.out.println("Find all: " +start + " " + end);
     Page<Todo> page = new PageImpl<>(todos.subList(start, end), pageable, todos.size());
     return page;
   }
@@ -68,7 +67,6 @@ public class TodoService implements ITodoService {
     List<Todo> todos = repository.filter(name, priority, done);
     int start = (int) pageable.getOffset();
     int end = (int) ((start + pageable.getPageSize()) > todos.size() ? todos.size() : (start + pageable.getPageSize()));
-    System.out.println("Filter: " +start + " " + end);
     Page<Todo> page = new PageImpl<>(todos.subList(start, end), pageable, todos.size());
     return page;
   }
