@@ -36,7 +36,7 @@ public class TodoController {
     priority = (priority.equals("ALL")) ? null : priority;
     done = (done.equals("ALL")) ? null : done;
 
-    Pageable todoPage = PageRequest.of(0,10);
+    Pageable todoPage = PageRequest.of(pageNumber,10);
 
     if( name == priority && name == done){
       if (service.isEmpty()) {
