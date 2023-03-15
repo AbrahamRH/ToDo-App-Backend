@@ -1,6 +1,5 @@
 package com.todolist.Backendproject.Controller;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.net.URI;
 import java.time.LocalDateTime;
@@ -17,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.http.ResponseEntity;
 
-import com.todolist.Backendproject.Component.Priority;
 import com.todolist.Backendproject.Component.Todo;
 import com.todolist.Backendproject.Service.TodoService;
 
@@ -30,43 +28,22 @@ public class TodoController {
 
   @GetMapping(value = "/todos", produces = "application/json")
   public ResponseEntity<List<Todo>> findAll(@RequestParam(defaultValue = "") String name,
-      @RequestParam(defaultValue = "ALL") String priority, @RequestParam(defaultValue = "All") String done) {
-    if (service.isEmpty()) {
-      return ResponseEntity.noContent().build();
-    } else {
-      List<Todo> filteredTodos = new ArrayList<>();
-      if (name != "") {
-        filteredTodos = service.filterByName(name);
-      } else if (priority != "ALL") {
-        Priority prio = Priority.valueOf(priority);
-        if (filteredTodos.size() == 0) {
-          filteredTodos = service.filterByPriority(prio);
-        } else {
-          List<Todo> tempList = new ArrayList<>();
-          for (Todo todo : service.filterByPriority(prio)) {
-            if (filteredTodos.contains(todo)) {
-              tempList.add(todo);
-            }
-          }
-          filteredTodos = tempList;
-        }
-      } else if (done != "All") {
-        boolean isDone = (done.equals(done)) ? true : false;
-        if (filteredTodos.size() == 0) {
-          filteredTodos = service.filterByDone(isDone);
-        } else {
-          List<Todo> tempList = new ArrayList<>();
-          for (Todo todo : service.filterByDone(isDone)) {
-            if (filteredTodos.contains(todo)) {
-              tempList.add(todo);
-            }
-          }
-          filteredTodos = tempList;
-        }
-      }
+      @RequestParam(defaultValue = "ALL") String priority, @RequestParam(defaultValue = "ALL") String done) {
 
-      if (filteredTodos.isEmpty()) {
+    name = ( name == "") ? null : name;
+    priority = (priority.equals("ALL")) ? null : priority;
+    done = (done.equals("ALL")) ? null : done;
+
+    if( name == priority && name == done){
+      if (service.isEmpty()) {
+        return ResponseEntity.noContent().build();
+      } else { 
         return ResponseEntity.ok().body(service.findAll());
+      }
+    } else {
+      List<Todo> filteredTodos = service.filter(name, priority, done);
+      if (filteredTodos.isEmpty()) {
+        return ResponseEntity.noContent().build();
       } else {
         return ResponseEntity.ok().body(filteredTodos);
       }
