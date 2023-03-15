@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.http.ResponseEntity;
 
@@ -26,11 +27,26 @@ public class TodoController {
   private TodoService service;
 
   @GetMapping(value = "/todos", produces = "application/json")
-  public ResponseEntity<List<Todo>> findAll() {
-    if (service.isEmpty()) {
-      return ResponseEntity.noContent().build();
+  public ResponseEntity<List<Todo>> findAll(@RequestParam(defaultValue = "") String name,
+      @RequestParam(defaultValue = "ALL") String priority, @RequestParam(defaultValue = "ALL") String done) {
+
+    name = ( name == "") ? null : name;
+    priority = (priority.equals("ALL")) ? null : priority;
+    done = (done.equals("ALL")) ? null : done;
+
+    if( name == priority && name == done){
+      if (service.isEmpty()) {
+        return ResponseEntity.noContent().build();
+      } else { 
+        return ResponseEntity.ok().body(service.findAll());
+      }
     } else {
-      return ResponseEntity.ok().body(service.findAll());
+      List<Todo> filteredTodos = service.filter(name, priority, done);
+      if (filteredTodos.isEmpty()) {
+        return ResponseEntity.noContent().build();
+      } else {
+        return ResponseEntity.ok().body(filteredTodos);
+      }
     }
   }
 
@@ -44,10 +60,7 @@ public class TodoController {
     }
   }
 
-  @PostMapping(
-    value = "/todos", consumes = "application/json", 
-    produces = "application/json"
-  )
+  @PostMapping(value = "/todos", consumes = "application/json", produces = "application/json")
   public ResponseEntity<Todo> createTodo(@RequestBody Todo todo) {
     service.createTodo(todo);
     URI url = URI.create("/todos/" + todo.getId());
@@ -56,32 +69,28 @@ public class TodoController {
 
   @PutMapping(value = "/todos/{id}", consumes = "application/json")
   public ResponseEntity<Void> updateProduct(@PathVariable long id, @RequestBody Todo todo) {
-    if(!service.update(id, todo.getName(), todo.getPriority(), todo.getDueDate())) {
+    if (!service.update(id, todo.getName(), todo.getPriority(), todo.getDueDate())) {
       return ResponseEntity.notFound().build();
     } else {
       return ResponseEntity.ok().build();
     }
   }
 
-  @PostMapping(
-    value = "/todos/{id}/done"
-  )
+  @PostMapping(value = "/todos/{id}/done")
   public ResponseEntity<Void> setDone(@PathVariable long id) {
     service.findById(id).setDone(true);
     service.findById(id).setDoneDate(LocalDateTime.now());
     return ResponseEntity.ok().build();
   }
 
-  @PutMapping(
-    value = "/todos/{id}/undone"
-  )
+  @PutMapping(value = "/todos/{id}/undone")
   public ResponseEntity<Void> setUndone(@PathVariable long id) {
     service.findById(id).setDone(false);
     service.findById(id).setDoneDate(null);
     return ResponseEntity.ok().build();
   }
 
-  @DeleteMapping (value="/todos/{id}")
+  @DeleteMapping(value = "/todos/{id}")
   public ResponseEntity<Void> deleteTodo(@PathVariable long id) {
     if (!service.delete(id)) {
       return ResponseEntity.notFound().build();

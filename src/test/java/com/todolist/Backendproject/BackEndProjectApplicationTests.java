@@ -103,7 +103,7 @@ class BackEndProjectApplicationTests {
 		System.out.println("Ascending");
 		service.sort(false,false,true, true, false).forEach(System.out::println);;
 		System.out.println("Descending");
-		service.sort(false,false,true, true, false).forEach(System.out::println);;
+		service.sort(false,false,true, false, false).forEach(System.out::println);;
 	}
 
 	@Test
@@ -116,6 +116,17 @@ class BackEndProjectApplicationTests {
 		service.createTodo(new Todo("Limpiar Auto", true, Priority.HIGH, LocalDate.of(2023,12,4)));
 		System.out.println("Due Date - Ascending ; Priority - Descending");
 		service.sort(true,false,true, true, false).forEach(System.out::println);;
+	}
+
+	@Test
+	void testFilter() {
+		service.createTodo(new Todo("Limpiar Casa", true, Priority.HIGH, null));
+		service.createTodo(new Todo("Limpiar Casa", false, Priority.HIGH, LocalDate.of(2023,03,2)));
+		service.createTodo(new Todo("Limpiar Auto", true, Priority.MEDIUM, LocalDate.of(2023,02,2)));
+		service.createTodo(new Todo("Limpiar Auto", false, Priority.LOW, null));
+		service.createTodo(new Todo("Manejar Auto", true, Priority.LOW, LocalDate.of(2023,07,2)));
+		service.createTodo(new Todo("Limpiar Auto", false, Priority.HIGH, LocalDate.of(2023,12,4)));
+		service.filter("Limpiar", "LOW", "Done").forEach(System.out::println);
 	}
 
 }

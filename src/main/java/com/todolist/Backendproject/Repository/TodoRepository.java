@@ -31,12 +31,12 @@ public class TodoRepository {
   }
 
   public Todo findById(long id) {
-    return this.todos.stream().filter(todo -> todo.getId() == id)
+    return this.todos.parallelStream().filter(todo -> todo.getId() == id)
                .findFirst().orElse(null);
   }
 
   public List<Todo> filterByName(String name) {
-    return todos.stream()
+    return todos.parallelStream()
                 .filter(todo -> todo.getName()
                                     .toLowerCase()
                                     .contains(name.toLowerCase()))
@@ -44,7 +44,7 @@ public class TodoRepository {
   }
 
   public List<Todo> filterByPriority(Priority prio){
-    return todos.stream()
+    return todos.parallelStream()
                 .filter(todo -> todo.getPriority().equals(prio))
                 .collect(Collectors.toList());
   }
@@ -53,6 +53,31 @@ public class TodoRepository {
     return todos.parallelStream()
                 .filter(todo -> todo.isDone() == done)
                 .collect(Collectors.toList());
+  }
+
+  public List<Todo> filter(String name, String priority, String done) {
+    List<Todo> list = List.copyOf(this.todos);
+    List<Todo> filteredTodos = new ArrayList<>(list);
+    if(name != null){
+      filteredTodos = filterByName(name);
+    }
+    if(priority != null){
+      filteredTodos = intersection(filteredTodos,filterByPriority(Priority.valueOf(priority)));
+    }
+    if(done != null){
+      filteredTodos = intersection(filteredTodos,filterByDone(done.equals("Done")));
+    }
+    return filteredTodos;
+  }
+
+  private List<Todo> intersection(List<Todo> l1, List<Todo> l2 ){
+    List<Todo> temp = new ArrayList<>();
+    for(Todo todo : l2) {
+      if(l1.contains(todo)){
+        temp.add(todo);
+      }
+    }
+    return temp;
   }
 
   public boolean delete(long id){
