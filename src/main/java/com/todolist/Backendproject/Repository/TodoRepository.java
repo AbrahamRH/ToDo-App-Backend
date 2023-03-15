@@ -55,6 +55,31 @@ public class TodoRepository {
                 .collect(Collectors.toList());
   }
 
+  public List<Todo> filter(String name, String priority, String done) {
+    List<Todo> list = List.copyOf(this.todos);
+    List<Todo> filteredTodos = new ArrayList<>(list);
+    if(name != null){
+      filteredTodos = filterByName(name);
+    }
+    if(priority != null){
+      filteredTodos = intersection(filteredTodos,filterByPriority(Priority.valueOf(priority)));
+    }
+    if(done != null){
+      filteredTodos = intersection(filteredTodos,filterByDone(done.equals("Done")));
+    }
+    return filteredTodos;
+  }
+
+  private List<Todo> intersection(List<Todo> l1, List<Todo> l2 ){
+    List<Todo> temp = new ArrayList<>();
+    for(Todo todo : l2) {
+      if(l1.contains(todo)){
+        temp.add(todo);
+      }
+    }
+    return temp;
+  }
+
   public boolean delete(long id){
     return todos.removeIf(todo -> (todo.getId() == id));
   }
