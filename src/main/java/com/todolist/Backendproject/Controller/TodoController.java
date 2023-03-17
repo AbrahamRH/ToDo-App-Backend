@@ -18,7 +18,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.http.ResponseEntity;
 
+import com.todolist.Backendproject.Component.Priority;
 import com.todolist.Backendproject.Component.Todo;
+import com.todolist.Backendproject.Repository.Metrics;
 import com.todolist.Backendproject.Service.TodoService;
 
 @RestController
@@ -101,6 +103,17 @@ public class TodoController {
     } else {
       return ResponseEntity.ok().build();
     }
+  }
+
+  @GetMapping(value = "/todos/metrics", produces = "application/json")
+  public ResponseEntity<Metrics>  getMetrics(){
+    long totalAvg = service.average();
+    long lowAverage = service.averageByPriority(Priority.LOW);
+    long mediumAverage = service.averageByPriority(Priority.MEDIUM);
+    long highAverage = service.averageByPriority(Priority.HIGH);
+    Metrics metrics = new Metrics(totalAvg, lowAverage, mediumAverage, highAverage);
+    return ResponseEntity.ok().body(metrics);
+    
   }
 
 }
