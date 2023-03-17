@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.ArrayList;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.Collections;
 import java.util.stream.Collectors;
 
@@ -110,4 +111,31 @@ public class TodoRepository {
     }
     return sortedTodos;
   }
+
+  public long totalAverage() {
+    return getAverange(todos);
+  }
+
+  public long averageByPriority(Priority priority){
+    return getAverange(filterByPriority(priority));
+  }
+
+  /**
+   * 
+   * @return Gives the average time in seconds to complete their tasks
+   */
+  private long getAverange(List<Todo> todosDone){
+    ArrayList<Long> differences = new ArrayList<>();
+    todosDone.forEach( todo -> {
+      if(todo.isDone()){
+        long creationDateEpoch = todo.getCreationDate().toEpochSecond(ZoneOffset.UTC);
+        long doneDateEpoch = todo.getDoneDate().toEpochSecond(ZoneOffset.UTC);
+        differences.add((doneDateEpoch - creationDateEpoch));
+      }
+    });
+    if (differences.size() == 0) return 0;
+    Long sum = differences.stream().mapToLong(Long::longValue).sum();
+    return sum/differences.size();
+  }
+
 }

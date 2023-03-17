@@ -36,5 +36,6 @@ public interface ITodoService {
 
   boolean isEmpty();
 
+  long average();
   
 }

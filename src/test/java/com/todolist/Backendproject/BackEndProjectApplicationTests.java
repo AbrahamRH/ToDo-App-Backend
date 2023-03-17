@@ -9,6 +9,8 @@ import com.todolist.Backendproject.Service.TodoService;
 import com.todolist.Backendproject.Repository.TodoRepository;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.Month;
 
 @SpringBootTest
 class BackEndProjectApplicationTests {
@@ -127,6 +129,29 @@ class BackEndProjectApplicationTests {
 		service.createTodo(new Todo("Manejar Auto", true, Priority.LOW, LocalDate.of(2023,07,2)));
 		service.createTodo(new Todo("Limpiar Auto", false, Priority.HIGH, LocalDate.of(2023,12,4)));
 		service.filter("Limpiar", "LOW", "Done").forEach(System.out::println);
+	}
+
+	@Test
+	void testAverage(){
+		Todo todo1 = new Todo("Limpiar Casa", false, Priority.HIGH, LocalDate.of(2023,03,2));
+		Todo todo2 = new Todo("Limpiar Casa", false, Priority.HIGH, LocalDate.of(2023,03,2));
+		todo1.setDone(true);
+		todo1.setDoneDate(LocalDateTime.of(2023, Month.MARCH, 17,11,30,2,00000));
+		todo2.setDone(true);
+		todo2.setDoneDate(LocalDateTime.of(2023, Month.MARCH, 17,11,30,2,00000));
+		service.createTodo(todo1);
+		service.createTodo(todo2);
+
+
+		Long seconds = service.average();
+		long sec = seconds % 60;
+    long minutes = seconds % 3600 / 60;
+    long hours = seconds % 86400 / 3600;
+    long days = seconds / 86400;
+
+    System.out.println("Day " + days + " Hour " + hours + " Minute " + minutes + " Seconds " + sec);
+
+
 	}
 
 }

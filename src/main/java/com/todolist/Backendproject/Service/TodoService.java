@@ -97,4 +97,9 @@ public class TodoService implements ITodoService {
     return (repository.findAll().size() == 0) ? true : false;
   }
 
+  @Override
+  public long average(){
+    return repository.totalAverage();
+  }
+
 }
