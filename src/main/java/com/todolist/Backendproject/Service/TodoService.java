@@ -102,4 +102,9 @@ public class TodoService implements ITodoService {
     return repository.totalAverage();
   }
 
+  @Override
+  public long averageByPriority(Priority priority){
+    return repository.averageByPriority(priority);
+  }
+
 }
