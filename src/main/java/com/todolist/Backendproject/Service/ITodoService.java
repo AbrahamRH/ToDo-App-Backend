@@ -36,5 +36,8 @@ public interface ITodoService {
 
   boolean isEmpty();
 
+  long average();
+
+  long averageByPriority(Priority priority);
   
 }
