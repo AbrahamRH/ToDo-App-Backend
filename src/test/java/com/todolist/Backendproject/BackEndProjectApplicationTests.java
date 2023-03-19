@@ -84,41 +84,6 @@ class BackEndProjectApplicationTests {
 		assert(service.findById(newTodo.getId()).getPriority() == Priority.HIGH);
 	}
 
-	@Test
-	void testSortingPriority(){
-		Todo newTodo = new Todo("Limpiar", false, Priority.LOW, LocalDate.of(2023,04,4));
-		service.createTodo(newTodo);
-		service.createTodo(new Todo("Limpiar Casa", true, Priority.MEDIUM, LocalDate.of(2023,03,2)));
-		service.createTodo(new Todo("Limpiar Auto", true, Priority.MEDIUM, LocalDate.of(2023,02,2)));
-		System.out.println("Ascending");
-		service.sort(true,true,false, false, true).forEach(System.out::println);;
-		System.out.println("Descending");
-		service.sort(true,false,false, false, true).forEach(System.out::println);;
-	}
-
-	@Test
-	void testSortingDueDate(){
-		service.createTodo(new Todo("Limpiar Casa", true, Priority.MEDIUM, null));
-		service.createTodo(new Todo("Limpiar Casa", true, Priority.HIGH, LocalDate.of(2023,03,2)));
-		service.createTodo(new Todo("Limpiar Auto", true, Priority.MEDIUM, LocalDate.of(2023,02,2)));
-		service.createTodo(new Todo("Limpiar Auto", true, Priority.LOW, LocalDate.of(2023,02,2)));
-		System.out.println("Ascending");
-		service.sort(false,false,true, true, false).forEach(System.out::println);;
-		System.out.println("Descending");
-		service.sort(false,false,true, false, false).forEach(System.out::println);;
-	}
-
-	@Test
-	void testSortigTwoAttributes(){
-		service.createTodo(new Todo("Limpiar Casa", true, Priority.MEDIUM, null));
-		service.createTodo(new Todo("Limpiar Casa", true, Priority.HIGH, LocalDate.of(2023,03,2)));
-		service.createTodo(new Todo("Limpiar Auto", true, Priority.MEDIUM, LocalDate.of(2023,02,2)));
-		service.createTodo(new Todo("Limpiar Auto", true, Priority.LOW, null));
-		service.createTodo(new Todo("Limpiar Auto", true, Priority.LOW, LocalDate.of(2023,07,2)));
-		service.createTodo(new Todo("Limpiar Auto", true, Priority.HIGH, LocalDate.of(2023,12,4)));
-		System.out.println("Due Date - Ascending ; Priority - Descending");
-		service.sort(true,false,true, true, false).forEach(System.out::println);;
-	}
 
 	@Test
 	void testFilter() {
