@@ -4,13 +4,24 @@ import java.util.Comparator;
 
 public class ComparatorTodo implements Comparator<Todo>{
 
-  private boolean byPriority;
-  private boolean ascending;
+  private enum Direction {
+    ASCENDING,
+    DESCENDING
+  };
 
-  public ComparatorTodo(boolean byPriority, boolean ascending ){
-    this.byPriority = byPriority;
-    this.ascending = ascending;
+  private String field;
+  private Direction direction;
+
+  public ComparatorTodo(String field, String direction ){
+    this.field = field;
+    if (direction.equals("asc")) {
+      this.direction = Direction.ASCENDING;
+    } else if (direction.equals("desc")) {
+      this.direction = Direction.DESCENDING;
+    }
+
   }
+
 
   public int comparePriority(Todo todo1, Todo todo2) {
     return todo1.getPriority().getValue() - todo2.getPriority().getValue();
@@ -34,14 +45,14 @@ public class ComparatorTodo implements Comparator<Todo>{
   @Override
   public int compare(Todo todo1, Todo todo2){
 
-    if (ascending){
-      if (byPriority){
+    if (direction == Direction.ASCENDING){
+      if ( field == "priority"){
         return comparePriority(todo1, todo2);
       } else {
         return compareDueDate(todo1, todo2);
       }
     } else {
-      if (byPriority){
+      if (field == "priority"){
         return comparePriority(todo2, todo1);
       } else {
         return compareDueDate(todo2, todo1);
