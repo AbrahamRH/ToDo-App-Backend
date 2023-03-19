@@ -74,10 +74,10 @@ public class TodoService implements ITodoService {
       if (params[0].contains(",")) { // We need to sort different fields
         for (String order : params) {
           String[] _sort = order.split(",");
-          comparators.add(new ComparatorTodo(_sort[1], _sort[0]));
+          comparators.add(new ComparatorTodo(_sort[0], _sort[1]));
         }
       } else {
-        comparators.add(new ComparatorTodo(params[1], params[0]));
+        comparators.add(new ComparatorTodo(params[0], params[1]));
       }
     } else {
       return todos;
