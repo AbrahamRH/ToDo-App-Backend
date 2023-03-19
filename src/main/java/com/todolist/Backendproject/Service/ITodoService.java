@@ -32,7 +32,7 @@ public interface ITodoService {
 
   List<Todo> filterByDone(boolean done);
 
-  List<Todo> sort(boolean byPriority, boolean pAscending, boolean byDueDate, boolean dAscending, boolean firstPrio);
+  List <Todo> sort(List<Todo> todos, String[] params);
 
   boolean isEmpty();
 

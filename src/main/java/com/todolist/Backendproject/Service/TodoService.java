@@ -8,8 +8,10 @@ import org.springframework.data.domain.Pageable;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.ArrayList;
 
 import com.todolist.Backendproject.Repository.TodoRepository;
+import com.todolist.Backendproject.Component.ComparatorTodo;
 import com.todolist.Backendproject.Component.Priority;
 import com.todolist.Backendproject.Component.Todo;
 
@@ -87,9 +89,21 @@ public class TodoService implements ITodoService {
   }
 
   @Override
-  public List<Todo> sort(boolean byPriority, boolean pAscending, boolean byDueDate, boolean dAscending,
-      boolean firstPrio) {
-    return repository.sort(byPriority, pAscending, byDueDate, dAscending, firstPrio);
+  public List<Todo> sort(List<Todo> todos, String[] params) {
+    List<ComparatorTodo> comparators = new ArrayList<>();
+    if (params != null) {
+      if (params[0].contains(",")) { // We need to sort different fields
+        for (String order : params) {
+          String[] _sort = order.split(",");
+          comparators.add(new ComparatorTodo(_sort[1], _sort[0]));
+        }
+      } else {
+        comparators.add(new ComparatorTodo(params[1], params[0]));
+      }
+    } else {
+      return todos;
+    }
+    return repository.sort(todos, comparators);
   }
 
   @Override
@@ -98,12 +112,12 @@ public class TodoService implements ITodoService {
   }
 
   @Override
-  public long average(){
+  public long average() {
     return repository.totalAverage();
   }
 
   @Override
-  public long averageByPriority(Priority priority){
+  public long averageByPriority(Priority priority) {
     return repository.averageByPriority(priority);
   }
 
