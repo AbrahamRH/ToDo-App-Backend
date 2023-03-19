@@ -24,6 +24,7 @@ import com.todolist.Backendproject.Component.Todo;
 import com.todolist.Backendproject.Repository.Metrics;
 import com.todolist.Backendproject.Service.TodoService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -34,37 +35,34 @@ public class TodoController {
   private TodoService service;
 
   @GetMapping(value = "/todos", produces = "application/json")
-  public ResponseEntity<Page<Todo>> findAll( 
-    @RequestParam(defaultValue = "0") int pageNumber,
-    @RequestParam(defaultValue = "") String name, 
-    @RequestParam(defaultValue = "ALL") String priority, 
-    @RequestParam(defaultValue = "ALL") String done,
-    @RequestParam(required = false) String[] sort) { // "field, directon"
+  public ResponseEntity<Page<Todo>> findAll(
+      @RequestParam(defaultValue = "0") int pageNumber,
+      @RequestParam(defaultValue = "") String name,
+      @RequestParam(defaultValue = "ALL") String priority,
+      @RequestParam(defaultValue = "ALL") String done,
+      @RequestParam(required = false) String[] sort) {
 
-    name = ( name == "") ? null : name;
+    name = (name == "") ? null : name;
     priority = (priority.equals("ALL")) ? null : priority;
     done = (done.equals("ALL")) ? null : done;
 
-    Pageable todoPage = PageRequest.of(pageNumber,10);
+    List<Todo> todosResponse = new ArrayList<>();
+    Pageable todoPage = PageRequest.of(pageNumber, 10);
 
-    if( name == priority && name == done){
-      if (service.isEmpty()) {
-        return ResponseEntity.noContent().build();
-      } else { 
-        List<Todo> todosResponse = service.sort(List.copyOf(service.findAll()), sort);
-        return ResponseEntity.ok().body(getPage(todoPage, todosResponse));
-      }
+    if (name == priority && name == done) {
+      todosResponse = service.sort(List.copyOf(service.findAll()), sort);
     } else {
-      List<Todo> todosResponse = service.sort(service.filter(name, priority, done), sort);
-      if (todosResponse.isEmpty()) {
-        return ResponseEntity.noContent().build();
-      } else {
-        return ResponseEntity.ok().body(getPage(todoPage, todosResponse));
-      }
+      todosResponse = service.sort(service.filter(name, priority, done), sort);
+    }
+
+    if (service.isEmpty()) {
+      return ResponseEntity.noContent().build();
+    } else {
+      return ResponseEntity.ok().body(getPage(todoPage, todosResponse));
     }
   }
 
-  private Page<Todo> getPage(Pageable pageable, List<Todo> todos){
+  private Page<Todo> getPage(Pageable pageable, List<Todo> todos) {
     int start = (int) pageable.getOffset();
     int end = (int) ((start + pageable.getPageSize()) > todos.size() ? todos.size() : (start + pageable.getPageSize()));
     Page<Todo> page = new PageImpl<>(todos.subList(start, end), pageable, todos.size());
@@ -121,14 +119,12 @@ public class TodoController {
   }
 
   @GetMapping(value = "/todos/metrics", produces = "application/json")
-  public ResponseEntity<Metrics>  getMetrics(){
+  public ResponseEntity<Metrics> getMetrics() {
     long totalAvg = service.average();
     long lowAverage = service.averageByPriority(Priority.LOW);
     long mediumAverage = service.averageByPriority(Priority.MEDIUM);
     long highAverage = service.averageByPriority(Priority.HIGH);
     Metrics metrics = new Metrics(totalAvg, lowAverage, mediumAverage, highAverage);
     return ResponseEntity.ok().body(metrics);
-    
   }
-
 }
