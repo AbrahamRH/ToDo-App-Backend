@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -23,6 +24,8 @@ import com.todolist.Backendproject.Component.Todo;
 import com.todolist.Backendproject.Repository.Metrics;
 import com.todolist.Backendproject.Service.TodoService;
 
+import java.util.List;
+
 @RestController
 @CrossOrigin
 public class TodoController {
@@ -31,8 +34,12 @@ public class TodoController {
   private TodoService service;
 
   @GetMapping(value = "/todos", produces = "application/json")
-  public ResponseEntity<Page<Todo>> findAll( @RequestParam(defaultValue = "0") int pageNumber,
-    @RequestParam(defaultValue = "") String name, @RequestParam(defaultValue = "ALL") String priority, @RequestParam(defaultValue = "ALL") String done) {
+  public ResponseEntity<Page<Todo>> findAll( 
+    @RequestParam(defaultValue = "0") int pageNumber,
+    @RequestParam(defaultValue = "") String name, 
+    @RequestParam(defaultValue = "ALL") String priority, 
+    @RequestParam(defaultValue = "ALL") String done,
+    @RequestParam(required = false) String[] sort) { // "field, directon"
 
     name = ( name == "") ? null : name;
     priority = (priority.equals("ALL")) ? null : priority;
@@ -44,16 +51,24 @@ public class TodoController {
       if (service.isEmpty()) {
         return ResponseEntity.noContent().build();
       } else { 
-        return ResponseEntity.ok().body(service.findAll(todoPage));
+        List<Todo> todosResponse = service.sort(List.copyOf(service.findAll()), sort);
+        return ResponseEntity.ok().body(getPage(todoPage, todosResponse));
       }
     } else {
-      Page<Todo> filteredTodos = service.filter(name, priority, done, todoPage);
-      if (filteredTodos.isEmpty()) {
+      List<Todo> todosResponse = service.sort(service.filter(name, priority, done), sort);
+      if (todosResponse.isEmpty()) {
         return ResponseEntity.noContent().build();
       } else {
-        return ResponseEntity.ok().body(filteredTodos);
+        return ResponseEntity.ok().body(getPage(todoPage, todosResponse));
       }
     }
+  }
+
+  private Page<Todo> getPage(Pageable pageable, List<Todo> todos){
+    int start = (int) pageable.getOffset();
+    int end = (int) ((start + pageable.getPageSize()) > todos.size() ? todos.size() : (start + pageable.getPageSize()));
+    Page<Todo> page = new PageImpl<>(todos.subList(start, end), pageable, todos.size());
+    return page;
   }
 
   @GetMapping("/todos/{id}")

@@ -2,9 +2,6 @@ package com.todolist.Backendproject.Service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -46,15 +43,6 @@ public class TodoService implements ITodoService {
   }
 
   @Override
-  public Page<Todo> findAll(Pageable pageable) {
-    List<Todo> todos = List.copyOf(findAll());
-    int start = (int) pageable.getOffset();
-    int end = (int) ((start + pageable.getPageSize()) > todos.size() ? todos.size() : (start + pageable.getPageSize()));
-    Page<Todo> page = new PageImpl<>(todos.subList(start, end), pageable, todos.size());
-    return page;
-  }
-
-  @Override
   public Todo findById(long id) {
     return repository.findById(id);
   }
@@ -62,15 +50,6 @@ public class TodoService implements ITodoService {
   @Override
   public List<Todo> filter(String name, String priority, String done) {
     return repository.filter(name, priority, done);
-  }
-
-  @Override
-  public Page<Todo> filter(String name, String priority, String done, Pageable pageable) {
-    List<Todo> todos = repository.filter(name, priority, done);
-    int start = (int) pageable.getOffset();
-    int end = (int) ((start + pageable.getPageSize()) > todos.size() ? todos.size() : (start + pageable.getPageSize()));
-    Page<Todo> page = new PageImpl<>(todos.subList(start, end), pageable, todos.size());
-    return page;
   }
 
   @Override
