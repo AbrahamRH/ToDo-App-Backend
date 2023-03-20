@@ -2,8 +2,6 @@ package com.todolist.Backendproject.Service;
 
 import com.todolist.Backendproject.Component.Priority;
 import com.todolist.Backendproject.Component.Todo;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Page;
 import java.util.List;
 
 import java.time.LocalDate;
@@ -18,13 +16,9 @@ public interface ITodoService {
 
   List<Todo> findAll(); 
 
-  Page<Todo> findAll(Pageable pageable);
-
   Todo findById(long id);
 
   List<Todo> filter(String name, String priority, String done);
-
-  Page<Todo> filter(String name, String priority, String done, Pageable pageable);
 
   List<Todo> filterByName(String name);
 
@@ -32,7 +26,7 @@ public interface ITodoService {
 
   List<Todo> filterByDone(boolean done);
 
-  List<Todo> sort(boolean byPriority, boolean pAscending, boolean byDueDate, boolean dAscending, boolean firstPrio);
+  List <Todo> sort(List<Todo> todos, String[] params);
 
   boolean isEmpty();
 

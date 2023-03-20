@@ -2,14 +2,13 @@ package com.todolist.Backendproject.Service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.ArrayList;
 
 import com.todolist.Backendproject.Repository.TodoRepository;
+import com.todolist.Backendproject.Component.ComparatorTodo;
 import com.todolist.Backendproject.Component.Priority;
 import com.todolist.Backendproject.Component.Todo;
 
@@ -44,15 +43,6 @@ public class TodoService implements ITodoService {
   }
 
   @Override
-  public Page<Todo> findAll(Pageable pageable) {
-    List<Todo> todos = List.copyOf(findAll());
-    int start = (int) pageable.getOffset();
-    int end = (int) ((start + pageable.getPageSize()) > todos.size() ? todos.size() : (start + pageable.getPageSize()));
-    Page<Todo> page = new PageImpl<>(todos.subList(start, end), pageable, todos.size());
-    return page;
-  }
-
-  @Override
   public Todo findById(long id) {
     return repository.findById(id);
   }
@@ -60,15 +50,6 @@ public class TodoService implements ITodoService {
   @Override
   public List<Todo> filter(String name, String priority, String done) {
     return repository.filter(name, priority, done);
-  }
-
-  @Override
-  public Page<Todo> filter(String name, String priority, String done, Pageable pageable) {
-    List<Todo> todos = repository.filter(name, priority, done);
-    int start = (int) pageable.getOffset();
-    int end = (int) ((start + pageable.getPageSize()) > todos.size() ? todos.size() : (start + pageable.getPageSize()));
-    Page<Todo> page = new PageImpl<>(todos.subList(start, end), pageable, todos.size());
-    return page;
   }
 
   @Override
@@ -87,23 +68,35 @@ public class TodoService implements ITodoService {
   }
 
   @Override
-  public List<Todo> sort(boolean byPriority, boolean pAscending, boolean byDueDate, boolean dAscending,
-      boolean firstPrio) {
-    return repository.sort(byPriority, pAscending, byDueDate, dAscending, firstPrio);
+  public List<Todo> sort(List<Todo> todos, String[] params) {
+    List<ComparatorTodo> comparators = new ArrayList<>();
+    if (params != null) {
+      if (params[0].contains(",")) { // We need to sort different fields
+        for (String order : params) {
+          String[] _sort = order.split(",");
+          comparators.add(new ComparatorTodo(_sort[0], _sort[1]));
+        }
+      } else {
+        comparators.add(new ComparatorTodo(params[0], params[1]));
+      }
+    } else {
+      return todos;
+    }
+    return repository.sort(todos, comparators);
   }
 
   @Override
   public boolean isEmpty() {
-    return (repository.findAll().size() == 0) ? true : false;
+    return (repository.findAll().size() == 0);
   }
 
   @Override
-  public long average(){
+  public long average() {
     return repository.totalAverage();
   }
 
   @Override
-  public long averageByPriority(Priority priority){
+  public long averageByPriority(Priority priority) {
     return repository.averageByPriority(priority);
   }
 

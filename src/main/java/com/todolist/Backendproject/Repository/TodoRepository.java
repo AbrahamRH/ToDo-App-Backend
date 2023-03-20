@@ -94,22 +94,13 @@ public class TodoRepository {
     return true;
   }
 
-  public List<Todo> sort(boolean byPriority, boolean pAscending, boolean byDueDate, boolean dAscending, boolean firstPrio){
-    ComparatorTodo comparatorPriority = new ComparatorTodo(byPriority, pAscending);
-    ComparatorTodo comparatorDueDate = new ComparatorTodo(byDueDate, dAscending);
-    List<Todo> sortedTodos = new ArrayList<Todo>(todos);
-    if (byPriority && byDueDate) {
-      if (firstPrio){ 
-        Collections.sort(sortedTodos, comparatorPriority.thenComparing(comparatorDueDate));
-      } else {
-        Collections.sort(sortedTodos, comparatorDueDate.thenComparing(comparatorPriority));
-      }
-    } else if (byPriority) {
-      Collections.sort(sortedTodos, comparatorPriority);
+  public List<Todo> sort(List<Todo> todos, List<ComparatorTodo> comparators){
+    if(comparators.size() == 1) {
+      Collections.sort(todos, comparators.get(0));
     } else {
-      Collections.sort(sortedTodos, comparatorDueDate);
+      Collections.sort(todos, comparators.get(0).thenComparing(comparators.get(1)));
     }
-    return sortedTodos;
+    return todos;
   }
 
   public long totalAverage() {
