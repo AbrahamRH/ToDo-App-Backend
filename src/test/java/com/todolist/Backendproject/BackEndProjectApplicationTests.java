@@ -131,10 +131,10 @@ class BackEndProjectApplicationTests {
     List<Todo> list = List.copyOf(service.findAll());
     List<Todo> todos = new ArrayList<>(list);
 		String[] params = {"priority", "asc"};
-		System.out.println("Priority Ascending");
+		System.out.println("\n-- Priority Ascending -- \n");
 		service.sort(todos, params).forEach(System.out::println);
 		params[1] = "desc";
-		System.out.println("Priority Descending");
+		System.out.println("\n-- Priority descending -- \n");
 		service.sort(todos, params).forEach(System.out::println);
 	}
 
@@ -166,14 +166,43 @@ class BackEndProjectApplicationTests {
 		service.createTodo(new Todo("Manejar", true, Priority.LOW, LocalDate.of(2023,07,2)));
 		service.createTodo(new Todo("Hacer tarea", false, Priority.HIGH, LocalDate.of(2023,12,4)));
 		service.createTodo(new Todo("Leer", false, Priority.MEDIUM, LocalDate.of(2023,12,4)));
+		service.createTodo(new Todo("Limpiar moto", false, Priority.LOW, null));
     List<Todo> list = List.copyOf(service.findAll());
     List<Todo> todos = new ArrayList<>(list);
+		System.out.println(" -- First by dueDate -- ");
 		String[] params = {"dueDate,asc", "priority,asc"};
 		System.out.println("\n -- Due date Ascending - Priority Ascending -- \n");
 		service.sort(todos, params).forEach(todo -> System.out.println(todo.getId() + " " + todo.getPriority().toString() + " " + todo.getDueDate()));
 		params[0] = "dueDate,desc";
 		System.out.println("\n -- Due date Descending - Priority Ascending -- \n");
 		service.sort(todos, params).forEach(todo -> System.out.println(todo.getId() + " " + todo.getPriority().toString() + " " + todo.getDueDate()));
+		params[0] = "priority,desc";
+		params[1] = "dueDate,asc";
+		System.out.println("\n -- Priority Descending - Due datae Ascending -- \n");
+		service.sort(todos, params).forEach(todo -> System.out.println(todo.getId() + " " + todo.getPriority().toString() + " " + todo.getDueDate()));
+		String[] params2 = {"priotiy,desc"};
+		System.out.println("\n -- Priority Descending -- \n");
+		service.sort(todos, params2).forEach(todo -> System.out.println(todo.getId() + " " + todo.getPriority().toString() + " " + todo.getDueDate()));
+
+	}
+
+	@Test
+	void testSortingByPriorityAndDueDate2(){
+		service.createTodo(new Todo("Limpiar ", true, Priority.HIGH, null));
+		service.createTodo(new Todo("Limpiar Bano", false, Priority.HIGH, LocalDate.of(2023,03,2)));
+		service.createTodo(new Todo("Limpiar moto", false, Priority.MEDIUM, null));
+		service.createTodo(new Todo("Limpiar Cuarto", true, Priority.MEDIUM, LocalDate.of(2023,02,2)));
+		service.createTodo(new Todo("Limpiar moto", false, Priority.LOW, null));
+		service.createTodo(new Todo("Manejar", true, Priority.LOW, LocalDate.of(2023,07,2)));
+		service.createTodo(new Todo("Hacer tarea", false, Priority.HIGH, LocalDate.of(2023,12,4)));
+		service.createTodo(new Todo("Leer", false, Priority.MEDIUM, LocalDate.of(2023,12,4)));
+		service.createTodo(new Todo("Limpiar moto", false, Priority.LOW, null));
+    List<Todo> list = List.copyOf(service.findAll());
+    List<Todo> todos = new ArrayList<>(list);
+		String[] params = {"priority,desc", "dueDate,asc"};
+		System.out.println("\n -- Priority Descending - Due datae Ascending -- \n");
+		service.sort(todos, params).forEach(todo -> System.out.println(todo.getId() + " " + todo.getPriority().toString() + " " + todo.getDueDate()));
+
 	}
 
 }

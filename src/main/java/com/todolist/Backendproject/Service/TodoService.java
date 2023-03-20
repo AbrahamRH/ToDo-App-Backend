@@ -87,7 +87,7 @@ public class TodoService implements ITodoService {
 
   @Override
   public boolean isEmpty() {
-    return (repository.findAll().size() == 0) ? true : false;
+    return (repository.findAll().size() == 0);
   }
 
   @Override

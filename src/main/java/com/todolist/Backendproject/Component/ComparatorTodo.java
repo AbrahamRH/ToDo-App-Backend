@@ -46,13 +46,13 @@ public class ComparatorTodo implements Comparator<Todo>{
   public int compare(Todo todo1, Todo todo2){
 
     if (direction == Direction.ASCENDING){
-      if ( field == "priority"){
+      if ( field.equals("priority")){
         return comparePriority(todo1, todo2);
       } else {
         return compareDueDate(todo1, todo2);
       }
     } else {
-      if (field == "priority"){
+      if (field.equals("priority")){
         return comparePriority(todo2, todo1);
       } else {
         return compareDueDate(todo2, todo1);
